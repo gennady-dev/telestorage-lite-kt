@@ -65,11 +65,11 @@ object Tg {
   private fun onAuthorizationStateUpdated(state: TdApi.AuthorizationState?) {
 
     state?.let { authorizationState = it }
+    Log.d("AuthStateUpdated", state.toString())
 
     when(authorizationState?.constructor) {
 
       TdApi.AuthorizationStateWaitTdlibParameters.CONSTRUCTOR -> {
-        Log.d(null, "AuthorizationStateWaitTdlibParameters")
         haveAuthorization = false
         val parameters = TdApi.TdlibParameters()
         // parameters.useTestDc = true;
@@ -501,7 +501,7 @@ object Tg {
           }
         }
         TdApi.UpdateAuthorizationState.CONSTRUCTOR -> {
-          Log.d(null, "UpdatesHandler UpdateAuthorizationState $received")
+          Log.d("AuthStateUpdated", received.toString())
           onAuthorizationStateUpdated((received as TdApi.UpdateAuthorizationState).authorizationState)
         }
         TdApi.UpdateConnectionState.CONSTRUCTOR -> {
@@ -769,6 +769,9 @@ object Tg {
 ////            uploadingUpdate(updateFile.file)
 ////          }
           val debug = null
+        }
+        TdApi.Error.CONSTRUCTOR -> {
+          Log.d("UpdatesHandler", "UpdatesHandler $received")
         }
         else -> {
 //          FileUpdates.nextDataTransfer(false)
